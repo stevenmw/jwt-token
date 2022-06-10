@@ -38,8 +38,8 @@ class TodoController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'title' => 'required|string',
-                'body' => 'required|string',
+                'title'     => 'required|string',
+                'body'      => 'required|string',
                 'completed' => 'required|boolean',
             ]
         );
@@ -47,7 +47,7 @@ class TodoController extends Controller
         if ($validator->fails()) {
             return response()->json(
                 [
-                    'status' => 'false',
+                    'status' => false,
                     'errors' => $validator->errors(),
                 ],
                 400
@@ -59,18 +59,23 @@ class TodoController extends Controller
         $todo->body         = $request->body;
         $todo->completed    = $request->completed;
 
+        $todo            = new Todo();
+        $todo->title     = $request->title;
+        $todo->body      = $request->body;
+        $todo->completed = $request->completed;
+
         if ($this->user->todos()->save($todo)) {
             return response()->json(
                 [
                     'status' => true,
-                    'todo' => $todo
+                    'todo'   => $todo,
                 ]
             );
         } else {
             return response()->json(
                 [
-                    'status' => false,
-                    'message' => 'Oops, the todo cannot be saved',
+                    'status'  => false,
+                    'message' => 'Oops, the todo could not be saved.',
                 ]
             );
         }
@@ -99,17 +104,20 @@ class TodoController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'title' => 'required|string',
-                'body' => 'required|string',
-                'completed' => 'required|boolean'
+                'title'     => 'required|string',
+                'body'      => 'required|string',
+                'completed' => 'required|boolean',
             ]
         );
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'false',
-                'errors' => $validator->errors()
-            ], 400);
+            return response()->json(
+                [
+                    'status' => false,
+                    'errors' => $validator->errors(),
+                ],
+                400
+            );
         }
 
         $todo->title     = $request->title;
@@ -120,18 +128,18 @@ class TodoController extends Controller
             return response()->json(
                 [
                     'status' => true,
-                    'todo' => $todo,
+                    'todo'   => $todo,
                 ]
             );
         } else {
             return response()->json(
                 [
-                    'status' => false,
-                    'message' => 'Oops, the todo cannot be updated',
+                    'status'  => false,
+                    'message' => 'Oops, the todo could not be updated.',
                 ]
             );
         }
-    }
+    } //end update()
 
     /**
      * Remove the specified resource from storage.

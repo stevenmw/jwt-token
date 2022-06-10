@@ -43,9 +43,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6'
+            'name'      => 'required|string|between:2,100',
+            'email'     => 'required|email|unique:users',
+            'password'  => 'required|confirmed|min:6'
         ]);
 
         if ($validator->fails()) {
@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function profile()
     {
         return response()->json($this->guard()->user());
-    }
+    } //end profile()
 
     public function refresh()
     {
@@ -89,8 +89,8 @@ class AuthController extends Controller
     {
         return response()->json(
             [
-                'token' => $token,
-                'token_type' => 'bearer',
+                'token'          => $token,
+                'token_type'     => 'bearer',
                 'token_validity' => ($this->guard()->factory()->getTTL() * 60),
             ]
         );
